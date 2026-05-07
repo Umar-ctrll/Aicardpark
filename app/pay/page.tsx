@@ -9,6 +9,7 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import { Lock, Phone } from "lucide-react";
 import { PHONE_NUMBER } from "@/lib/constants";
+import { findPenalty } from "@/lib/mock-penalties";
 
 function ProgressBar({ step }: { step: number }) {
   const steps = ["Look up", "Details", "Pay", "Done"];
@@ -76,24 +77,18 @@ function LookupForm() {
     }
 
     setLoading(true);
-    try {
-      const normalizedReg = reg.replace(/\s+/g, "").toUpperCase();
-      const res = await fetch(
-        `/api/penalty?reg=${normalizedReg}&id=${encodeURIComponent(penaltyId.trim())}`
+    // Simulate network delay then do client-side lookup
+    await new Promise((r) => setTimeout(r, 800));
+    const normalizedReg = reg.replace(/\s+/g, "").toUpperCase();
+    const found = findPenalty(normalizedReg, penaltyId.trim());
+    if (!found) {
+      setError(
+        "No penalty found for those details. Double-check the registration and reference ID."
       );
-      if (!res.ok) {
-        setError(
-          "No penalty found for those details. Double-check the registration and reference ID."
-        );
-        setLoading(false);
-        return;
-      }
-      const data = await res.json();
-      router.push(`/pay/${data.id}`);
-    } catch {
-      setError("Connection issue. Please try again.");
       setLoading(false);
+      return;
     }
+    router.push(`/pay/${found.id}`);
   };
 
   return (

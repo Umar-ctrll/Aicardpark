@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer";
 import StatusBadge from "@/components/ui/StatusBadge";
 import Button from "@/components/ui/Button";
 import { Lock, Clock, Camera } from "lucide-react";
-import type { Penalty } from "@/lib/mock-penalties";
+import { getPenaltyById, type Penalty } from "@/lib/mock-penalties";
 
 function ProgressBar({ step }: { step: number }) {
   const steps = ["Look up", "Details", "Pay", "Done"];
@@ -277,22 +277,15 @@ export default function PenaltyDetailPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchPenalty() {
-      try {
-        const res = await fetch(`/api/penalty?id=${params.penaltyId}`);
-        if (!res.ok) {
-          setError("Penalty not found.");
-          setLoading(false);
-          return;
-        }
-        const data = await res.json();
-        setPenalty(data);
-      } catch {
-        setError("Failed to load penalty details.");
-      }
-      setLoading(false);
+    // Use client-side mock data (no API call needed for static export)
+    const id = params.penaltyId as string;
+    const found = getPenaltyById(id);
+    if (found) {
+      setPenalty(found);
+    } else {
+      setError("Penalty not found.");
     }
-    fetchPenalty();
+    setLoading(false);
   }, [params.penaltyId]);
 
   return (
