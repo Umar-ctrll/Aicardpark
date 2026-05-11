@@ -297,6 +297,12 @@ export default function PenaltyDetailPage() {
   const [error, setError] = useState("");
   const [step, setStep] = useState(2);
 
+  const buildStepUrl = (penaltyId: string, slug: string) => {
+    // Extract basePath prefix (e.g. "/Aicardpark" on GitHub Pages, "" on localhost)
+    const basePath = window.location.pathname.split("/pay/")[0];
+    return `${basePath}/pay/${penaltyId}/${slug}`;
+  };
+
   useEffect(() => {
     // Use client-side mock data (no API call needed for static export)
     const id = params.penaltyId as string;
@@ -307,13 +313,15 @@ export default function PenaltyDetailPage() {
       setError("Penalty not found.");
     }
     setLoading(false);
+    // Set initial URL to include /details
+    window.history.replaceState(null, "", buildStepUrl(id, "details"));
   }, [params.penaltyId]);
 
   const handleStepChange = (newStep: number) => {
     setStep(newStep);
-    const stepSlug = newStep === 3 ? "payment" : "details";
     const penaltyId = params.penaltyId as string;
-    window.history.replaceState(null, "", `?step=${stepSlug}`);
+    const stepSlug = newStep === 3 ? "payment" : "details";
+    window.history.replaceState(null, "", buildStepUrl(penaltyId, stepSlug));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
