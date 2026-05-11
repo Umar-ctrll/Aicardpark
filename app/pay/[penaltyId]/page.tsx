@@ -50,11 +50,18 @@ function ProgressBar({ step }: { step: number }) {
   );
 }
 
-function PenaltyDetails({ penalty }: { penalty: Penalty }) {
+function PenaltyDetails({
+  penalty,
+  step,
+  onStepChange,
+}: {
+  penalty: Penalty;
+  step: number;
+  onStepChange: (step: number) => void;
+}) {
   const router = useRouter();
   const [paying, setPaying] = useState(false);
   const [email, setEmail] = useState("");
-  const [showPayment, setShowPayment] = useState(false);
 
   const daysRemaining = Math.max(
     0,
@@ -73,7 +80,7 @@ function PenaltyDetails({ penalty }: { penalty: Penalty }) {
     );
   };
 
-  if (showPayment) {
+  if (step === 3) {
     return (
       <div className="space-y-6">
         <div className="p-4 rounded-xl bg-purple-tint/50 border border-purple-primary/20">
@@ -141,6 +148,13 @@ function PenaltyDetails({ penalty }: { penalty: Penalty }) {
             ? "Processing your payment…"
             : `Pay £${penalty.amount.toFixed(2)} Securely →`}
         </Button>
+
+        <button
+          onClick={() => onStepChange(2)}
+          className="w-full text-center text-sm text-text-muted font-body hover:text-purple-primary transition-colors"
+        >
+          ← Back to details
+        </button>
 
         <div className="flex items-center justify-center gap-2 text-xs text-text-muted font-body">
           <Lock size={12} />
@@ -252,7 +266,7 @@ function PenaltyDetails({ penalty }: { penalty: Penalty }) {
 
       {/* Actions */}
       <Button
-        onClick={() => setShowPayment(true)}
+        onClick={() => onStepChange(3)}
         className="w-full py-4 font-display font-semibold text-base"
       >
         Pay £{penalty.amount.toFixed(2)} Now →
@@ -271,11 +285,17 @@ function PenaltyDetails({ penalty }: { penalty: Penalty }) {
   );
 }
 
+const STEP_LABELS: Record<number, string> = {
+  2: "Details",
+  3: "Payment",
+};
+
 export default function PenaltyDetailPage() {
   const params = useParams();
   const [penalty, setPenalty] = useState<Penalty | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [step, setStep] = useState(2);
 
   useEffect(() => {
     // Use client-side mock data (no API call needed for static export)
@@ -288,6 +308,14 @@ export default function PenaltyDetailPage() {
     }
     setLoading(false);
   }, [params.penaltyId]);
+
+  const handleStepChange = (newStep: number) => {
+    setStep(newStep);
+    const stepSlug = newStep === 3 ? "payment" : "details";
+    const penaltyId = params.penaltyId as string;
+    window.history.replaceState(null, "", `?step=${stepSlug}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -309,10 +337,12 @@ export default function PenaltyDetailPage() {
               Pay Penalty
             </Link>
             <span className="mx-2">→</span>
-            <span className="text-text-primary">Details</span>
+            <span className="text-text-primary">
+              {STEP_LABELS[step] || "Details"}
+            </span>
           </div>
 
-          <ProgressBar step={2} />
+          <ProgressBar step={step} />
 
           <div className="bg-white border border-border-custom rounded-[20px] p-8 lg:p-10 shadow-[var(--shadow-md)]">
             {loading ? (
@@ -333,7 +363,11 @@ export default function PenaltyDetailPage() {
                 </Link>
               </div>
             ) : penalty ? (
-              <PenaltyDetails penalty={penalty} />
+              <PenaltyDetails
+                penalty={penalty}
+                step={step}
+                onStepChange={handleStepChange}
+              />
             ) : null}
           </div>
         </div>
