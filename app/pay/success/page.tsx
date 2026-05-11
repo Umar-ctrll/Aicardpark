@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -103,12 +104,12 @@ function SuccessContent() {
                 <button className="w-full py-3 bg-white border border-border-custom rounded-[var(--radius-md)] text-sm font-body font-medium text-text-primary hover:border-purple-primary transition-all">
                   Download receipt PDF
                 </button>
-                <a
+                <Link
                   href="/"
                   className="text-sm text-purple-primary font-body hover:underline"
                 >
                   Return to home
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>

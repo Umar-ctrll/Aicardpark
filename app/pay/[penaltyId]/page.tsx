@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import StatusBadge from "@/components/ui/StatusBadge";
@@ -259,7 +260,7 @@ function PenaltyDetails({ penalty }: { penalty: Penalty }) {
       <Button
         variant="secondary"
         className="w-full py-3.5"
-        onClick={() => window.location.href = "/#penalty-zone"}
+        onClick={() => router.push("/#penalty-zone")}
       >
         Submit an Appeal
       </Button>
@@ -294,19 +295,19 @@ export default function PenaltyDetailPage() {
       <main className="min-h-screen bg-body-bg pt-[120px] pb-20">
         <div className="max-w-[520px] mx-auto px-6">
           <div className="mb-6 text-sm font-body text-text-muted">
-            <a
+            <Link
               href="/"
               className="hover:text-purple-primary transition-colors"
             >
               Home
-            </a>
+            </Link>
             <span className="mx-2">→</span>
-            <a
+            <Link
               href="/pay"
               className="hover:text-purple-primary transition-colors"
             >
               Pay Penalty
-            </a>
+            </Link>
             <span className="mx-2">→</span>
             <span className="text-text-primary">Details</span>
           </div>
@@ -324,12 +325,12 @@ export default function PenaltyDetailPage() {
             ) : error ? (
               <div className="py-12 text-center">
                 <p className="text-alert font-body">{error}</p>
-                <a
+                <Link
                   href="/pay"
                   className="mt-4 inline-block text-sm text-purple-primary hover:underline font-body"
                 >
                   ← Try again
-                </a>
+                </Link>
               </div>
             ) : penalty ? (
               <PenaltyDetails penalty={penalty} />

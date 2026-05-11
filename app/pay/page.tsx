@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Input from "@/components/ui/Input";
@@ -145,9 +146,9 @@ function PayPageContent() {
         <div className="max-w-[520px] mx-auto px-6">
           {/* Breadcrumb */}
           <div className="mb-6 text-sm font-body text-text-muted">
-            <a href="/" className="hover:text-purple-primary transition-colors">
+            <Link href="/" className="hover:text-purple-primary transition-colors">
               Home
-            </a>
+            </Link>
             <span className="mx-2">→</span>
             <span className="text-text-primary">Pay Penalty</span>
           </div>

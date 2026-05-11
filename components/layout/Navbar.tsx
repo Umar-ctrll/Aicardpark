@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { NAV_LINKS, CLIENT_LOGIN_URL } from "@/lib/constants";
 
@@ -30,12 +31,12 @@ export default function Navbar() {
     >
       <div className="max-w-[1280px] mx-auto h-full px-6 flex items-center justify-between">
         {/* Logo */}
-        <a href="/" className="flex items-center gap-2 shrink-0">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
           <span className="w-2 h-2 rounded-full bg-purple-primary animate-pulse-dot" />
           <span className="font-display font-bold text-xl text-white tracking-tight">
             AI Car Park
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">

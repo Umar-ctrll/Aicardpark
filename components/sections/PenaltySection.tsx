@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { CreditCard, Scale, Lock, Upload, CheckCircle2 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
@@ -10,6 +11,7 @@ import Button from "@/components/ui/Button";
 type Tab = "pay" | "appeal";
 
 function PayForm() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [reg, setReg] = useState("");
   const [penaltyId, setPenaltyId] = useState("");
@@ -26,7 +28,7 @@ function PayForm() {
     await new Promise((r) => setTimeout(r, 1500));
     const normalizedReg = reg.replace(/\s+/g, "").toUpperCase();
     const normalizedId = penaltyId.trim();
-    window.location.href = `/pay?reg=${normalizedReg}&id=${encodeURIComponent(normalizedId)}`;
+    router.push(`/pay?reg=${normalizedReg}&id=${encodeURIComponent(normalizedId)}`);
   };
 
   return (
