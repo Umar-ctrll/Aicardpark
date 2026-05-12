@@ -207,8 +207,8 @@ const categories: FAQCategory[] = [
 
 /* ── Accordion Item ──────────────────────────────────── */
 
-function FAQItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
+function FAQItem({ q, a, defaultOpen = false }: { q: string; a: string; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
     <div
@@ -279,8 +279,8 @@ function CategorySection({
         </h2>
       </div>
       <div className="space-y-2">
-        {category.items.map((item) => (
-          <FAQItem key={item.q} q={item.q} a={item.a} />
+        {category.items.map((item, i) => (
+          <FAQItem key={item.q} q={item.q} a={item.a} defaultOpen={index === 0 && i === 0} />
         ))}
       </div>
     </motion.div>
@@ -316,21 +316,6 @@ export default function FAQsPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* Quick jump pills */}
-      <div className="sticky top-[72px] z-40 bg-body-bg/95 backdrop-blur-sm border-b border-border-custom">
-        <div className="max-w-[1280px] mx-auto px-6 py-3 flex gap-2 overflow-x-auto scrollbar-hide">
-          {categories.map((cat) => (
-            <a
-              key={cat.title}
-              href={`#${cat.title.toLowerCase().replace(/\s+&?\s*/g, "-")}`}
-              className="shrink-0 px-4 py-2 text-xs font-body font-medium text-text-secondary bg-white border border-border-custom rounded-full hover:border-purple-primary hover:text-purple-primary transition-all duration-200"
-            >
-              {cat.title}
-            </a>
-          ))}
-        </div>
-      </div>
 
       {/* FAQ Sections */}
       <main className="bg-body-bg py-16 lg:py-24">
