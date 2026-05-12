@@ -40,15 +40,25 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-[15px] font-body text-text-muted hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-purple-primary after:transition-all after:duration-200 hover:after:w-full"
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-[15px] font-body text-text-muted hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-purple-primary after:transition-all after:duration-200 hover:after:w-full"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-[15px] font-body text-text-muted hover:text-white transition-colors duration-200 relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-purple-primary after:transition-all after:duration-200 hover:after:w-full"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
 
         {/* Desktop Actions */}
@@ -89,16 +99,27 @@ export default function Navbar() {
         }`}
       >
         <div className="flex flex-col items-center gap-6 pt-12 px-6">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="text-lg font-body text-text-muted hover:text-white transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="text-lg font-body text-text-muted hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="text-lg font-body text-text-muted hover:text-white transition-colors"
+              >
+                {link.label}
+              </a>
+            )
+          )}
           <div className="flex flex-col gap-3 w-full max-w-xs mt-6">
             <a
               href={CLIENT_LOGIN_URL}
